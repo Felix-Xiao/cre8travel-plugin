@@ -13,7 +13,13 @@
     const robot = new Robot();
     document.addEventListener('DOMContentLoaded', function () {
         const id = 11;
-        robot.show(id);
+        // actionType 大类名字，枚举值：NATIONAL_PARK, CITY, NATIONAL_PARK_LIST, CITY_LIST
+        // actionSubType 小类名字，对应的公园名字，城市名称，如果是列表，则传‘’
+        // 例如：
+        // robot.show("NATIONAL_PARK", "yellowstone");
+        // robot.show("NATIONAL_PARK_LIST", "");
+        // robot.show("CITY_LIST", "");
+        robot.show("CITY", "dallas");
     });
   </script>
 </body>

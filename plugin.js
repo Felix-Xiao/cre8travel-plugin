@@ -12,7 +12,7 @@
         // 引入 css
         var link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = 'https://kids.cre8travel.com/plugin/style.css';
+        link.href = 'https://cdn.jsdelivr.net/gh/Felix-Xiao/cre8travel-plugin@main/style.css';
         document.head.appendChild(link);
 
         const self = this;
@@ -31,7 +31,7 @@
 
         // 机器人图片
         var img = document.createElement('img');
-        img.src = 'https://kids.cre8travel.com/plugin/image/Hartford_ConCapital.png';
+        img.src = 'https://cdn.jsdelivr.net/gh/Felix-Xiao/cre8travel-plugin@main/image/Hartford_ConCapital.png';
         img.className = 'coverButton';
         self.robotElement.appendChild(img);
 
@@ -60,38 +60,44 @@
             handleTooltipClose();
         }, 20000);
     };
-    Robot.prototype.show = function (id) {
-        const self = this;
-        const requestData = {
-            currentPage: 1,
-            pageSize: 10,
-            npcConversation: {
-                npcId: 1,
-                actionType: "CITY",
-                actionSubType: "dallas"
-            }
-        };
-
-        fetch('https://www.cre8travel.com/npcConversation/converse', {
+    function npcConversation(requestData) {
+        return fetch('https://www.cre8travel.com/npcConversation/converse', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(requestData)
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(res => {
+    }
+    Robot.prototype.show = function (actionType, actionSubType) {
+        const self = this;
+        const requestData = {
+            currentPage: 1,
+            pageSize: 10,
+            npcConversation: {
+                npcId: 1,
+                actionType: actionType,
+                actionSubType: actionSubType
+            }
+        };
 
+        npcConversation(requestData).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+            .then(res => {
                 if (res.data && res.success && '0' === res.errorCode) {
                     // 获取npcConversation接口返回的数据，是个list，如果个数超过1，则随机取一个
                     if (res.data.length > 0) {
                         handleConversationData(res.data)
                     }
+                } else if (res && res.success && '8000' === res.errorCode) {
+                    // 当返回为8000时，由后端控制返回故事情节对话，npcId: 2, actionType: STORY
+                    npcConversation({ npcConversation: { npcId: 2, actionType: ActionType.STORY, actionSubType: actionSubType } }).then((response) => {
+                        handleConversationData(res)
+                    });
                 }
             })
             .catch(error => {
