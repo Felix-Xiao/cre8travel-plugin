@@ -14,11 +14,11 @@
     document.addEventListener('DOMContentLoaded', function () {
         const id = 11;
         // actionType 大类名字，枚举值：NATIONAL_PARK, CITY, NATIONAL_PARK_LIST, CITY_LIST
-        // actionSubType 小类名字，对应的公园名字，城市名称，如果是列表，则传‘’
+        // actionSubType 小类名字，对应的公园名字，城市名称，如果是列表，则传相应国家
         // 例如：
         // robot.show("NATIONAL_PARK", "yellowstone");
-        // robot.show("NATIONAL_PARK_LIST", "");
-        // robot.show("CITY_LIST", "");
+        // robot.show("NATIONAL_PARK_LIST", "USA");
+        // robot.show("CITY_LIST", ""USA);
         robot.show("CITY", "dallas");
     });
   </script>
