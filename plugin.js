@@ -12,7 +12,7 @@
         // 引入 css
         var link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = 'style.css'; // 替换为你的CSS文件路径
+        link.href = 'https://kids.cre8travel.com/plugin/style.css';
         document.head.appendChild(link);
 
         const self = this;
@@ -31,7 +31,7 @@
 
         // 机器人图片
         var img = document.createElement('img');
-        img.src = 'image/Hartford_ConCapital.png';
+        img.src = 'https://kids.cre8travel.com/plugin/image/Hartford_ConCapital.png';
         img.className = 'coverButton';
         self.robotElement.appendChild(img);
 
